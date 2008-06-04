@@ -1,0 +1,25 @@
+
+//include "DQM/L1TMonitor/data/BxTiming.cff"
+//include "DQM/L1TMonitor/data/L1TEmulatorMonitor.cff"
+//include "DQM/L1TMonitor/data/L1TFED.cff"
+//include "DQM/L1TMonitor/data/L1TLTC.cff" 
+include "DQM/L1TMonitor/data/L1TGT_readout.cff"
+include "DQM/L1TMonitor/data/L1TGCT_readout.cff"
+
+replace l1tgt.gtSource = "gtDigis::Rec"
+replace l1tgmt.gmtSource = "gtDigis::Rec"
+replace l1tdttf.dttpgSource = "dttfDigis::Rec"
+replace l1tcsctf.statusProducer = "csctfDigis::Rec"
+replace l1tcsctf.lctProducer    = "csctfDigis::Rec"
+replace l1tcsctf.trackProducer  = "csctfDigis::Rec"
+replace l1trpctf.rpctfSource = "gtDigis::Rec"
+
+path l1tgtpath = {l1tgt}
+path l1trpctfpath = {l1trpctf}
+path l1tcsctfpath = {l1tcsctf}
+path l1tdttpgpath = {l1tdttf}
+path l1tgmtpath = {l1tgmt}
+path l1trctpath = {l1trct}
+path l1tgctpath = {l1tgct}
+
+
