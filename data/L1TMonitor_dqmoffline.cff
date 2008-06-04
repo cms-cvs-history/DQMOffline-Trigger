@@ -1,8 +1,3 @@
-
-//include "DQM/L1TMonitor/data/BxTiming.cff"
-//include "DQM/L1TMonitor/data/L1TEmulatorMonitor.cff"
-//include "DQM/L1TMonitor/data/L1TFED.cff"
-//include "DQM/L1TMonitor/data/L1TLTC.cff" 
 include "DQM/L1TMonitor/data/L1TGT_readout.cff"
 include "DQM/L1TMonitor/data/L1TGCT_readout.cff"
 
@@ -21,5 +16,4 @@ path l1tdttpgpath = {l1tdttf}
 path l1tgmtpath = {l1tgmt}
 path l1trctpath = {l1trct}
 path l1tgctpath = {l1tgct}
-
 
