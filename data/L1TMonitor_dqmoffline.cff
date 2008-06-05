@@ -9,11 +9,13 @@ replace l1tcsctf.lctProducer    = "csctfDigis::Rec"
 replace l1tcsctf.trackProducer  = "csctfDigis::Rec"
 replace l1trpctf.rpctfSource = "gtDigis::Rec"
 
-path l1tgtpath = {l1tgt}
-path l1trpctfpath = {l1trpctf}
-path l1tcsctfpath = {l1tcsctf}
-path l1tdttpgpath = {l1tdttf}
-path l1tgmtpath = {l1tgmt}
-path l1trctpath = {l1trct}
-path l1tgctpath = {l1tgct}
+//path l1tgtpath = {l1tgt}
+//path l1trpctfpath = {l1trpctf}
+//path l1tcsctfpath = {l1tcsctf}
+//path l1tdttpgpath = {l1tdttf}
+//path l1tgmtpath = {l1tgmt}
+//path l1trctpath = {l1trct}
+//path l1tgctpath = {l1tgct}
+
+sequence l1tmonitor = {l1tgt, l1tgmt, l1trpctf, l1tcsctf, l1tdttf, l1trct, l1tgct}
 
