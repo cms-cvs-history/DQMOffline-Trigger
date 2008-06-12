@@ -1,21 +1,23 @@
 include "DQM/L1TMonitor/data/L1TGT_readout.cff"
 include "DQM/L1TMonitor/data/L1TGCT_readout.cff"
 
-replace l1tgt.gtSource = "gtDigis::Rec"
-replace l1tgmt.gmtSource = "gtDigis::Rec"
-replace l1tdttf.dttpgSource = "dttfDigis::Rec"
-replace l1tcsctf.statusProducer = "csctfDigis::Rec"
-replace l1tcsctf.lctProducer    = "csctfDigis::Rec"
-replace l1tcsctf.trackProducer  = "csctfDigis::Rec"
-replace l1trpctf.rpctfSource = "gtDigis::Rec"
+replace l1tgt.gtSource = "gtDigis::"
+replace l1tgmt.gmtSource = "gtDigis::"
+replace l1tdttf.dttpgSource = "dttfDigis::"
+replace l1tcsctf.statusProducer = "csctfDigis::"
+replace l1tcsctf.lctProducer    = "csctfDigis::"
+replace l1tcsctf.trackProducer  = "csctfDigis::"
+replace l1trpctf.rpctfSource = "gtDigis::"
+replace l1tgct.gctCentralJetsSource = "gctDigis:cenJets:"
+replace l1tgct.gctForwardJetsSource = "gctDigis:forJets:"
+replace l1tgct.gctTauJetsSource     = "gctDigis:tauJets:"
+replace l1tgct.gctEnergySumsSource  = "gctDigis::"
+replace l1tgct.gctIsoEmSource       = "gctDigis:isoEm:"
+replace l1tgct.gctNonIsoEmSource    = "gctDigis:nonIsoEm:"
+replace l1trct.rctSource = "gctDigis::"
 
-//path l1tgtpath = {l1tgt}
-//path l1trpctfpath = {l1trpctf}
-//path l1tcsctfpath = {l1tcsctf}
-//path l1tdttpgpath = {l1tdttf}
-//path l1tgmtpath = {l1tgmt}
-//path l1trctpath = {l1trct}
-//path l1tgctpath = {l1tgct}
+replace hltResults.triggerSummaryLabel = "hltTriggerSummaryAOD::"
+replace hltResults.plotAll = true
 
 sequence l1tmonitor = {l1tgt, l1tgmt, l1trpctf, l1tcsctf, l1tdttf, l1trct, l1tgct}
 
