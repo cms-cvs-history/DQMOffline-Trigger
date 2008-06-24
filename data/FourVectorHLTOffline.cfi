@@ -1,4 +1,4 @@
-# $Id: FourVectorHLTOffline.cfi,v 1.2 2008/05/26 07:59:36 wittich Exp $
+# $Id: FourVectorHLTOffline.cfi,v 1.1 2008/06/12 21:58:48 berryhil Exp $
     module hltResults = FourVectorHLTOffline {
        untracked double ptMin = 0
        untracked double ptMax = 100
@@ -9,3 +9,5 @@
        InputTag triggerSummaryLabel = "triggerSummaryProducerAOD::FU"
        VPSet filters = {}
     }
+
+

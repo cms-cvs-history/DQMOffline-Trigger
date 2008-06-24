@@ -19,5 +19,5 @@ replace l1trct.rctSource = "gctDigis::"
 replace hltResults.triggerSummaryLabel = "hltTriggerSummaryAOD::"
 replace hltResults.plotAll = true
 
-sequence l1tmonitor = {l1tgt, l1tgmt, l1trpctf, l1tcsctf, l1tdttf, l1trct, l1tgct}
+sequence l1tmonitor = {l1tgt, l1tgmt, l1trpctf, l1csctf, l1tdttf, l1trct, l1tgct}
 
