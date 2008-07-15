@@ -1,0 +1,16 @@
+  module egHLTOffDQMClient = EgHLTOfflineClient {
+#    InputTag barrelClusterShapeAssociation = hybridSuperClusters:hybridShapeAssoc
+#    InputTag endcapClusterShapeAssociation = islandBasicClusters:islandEndcapShapeAssoc
+
+     string sourceModuleName = "egammaHLTDQM"
+
+#       untracked double ptMin = 0
+#       untracked double ptMax = 100
+#       untracked bool plotAll = false
+       # this is I think MC
+#       InputTag triggerSummaryLabel = "hltTriggerSummaryAOD::HLT"
+#       # this is data (CRUZET I or II best guess)
+#       InputTag triggerSummaryLabel = "triggerSummaryProducerAOD::FU"
+#       VPSet filters = {}
+    }
+
