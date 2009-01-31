@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.21 2009/01/29 15:33:11 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.22 2009/01/29 15:40:03 rekovic Exp $
 // See header file for information. 
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "DataFormats/Common/interface/Handle.h"
@@ -171,7 +171,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   if(!gtObjectMapRecord.isValid()) { 
     edm::LogInfo("FourVectorHLTOffline") << "L1GlobalTriggerObjectMapRecord not found, ";
     //  "skipping event"; 
-    // return;
+     return;
   }
     unsigned long long l1GtMenuCacheID = iSetup.get<L1GtTriggerMenuRcd>().cacheIdentifier();
     
@@ -197,7 +197,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   if(!l1GTRR.isValid()) { 
     edm::LogInfo("FourVectorHLTOffline") << "L1GlobalTriggerReadoutRecord "<< l1GTRRLabel_ << " not found, ";
       //  "skipping event"; 
-      //return;
+      return;
   }
   const DecisionWord gtDecisionWord = l1GTRR->decisionWord();
 
