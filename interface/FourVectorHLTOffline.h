@@ -16,7 +16,7 @@
 //
 // Original Author:  Jeffrey Berryhill
 //         Created:  June 2008
-// $Id: FourVectorHLTOffline.h,v 1.8 2008/10/21 22:47:14 berryhil Exp $
+// $Id: FourVectorHLTOffline.h,v 1.12 2008/12/04 18:37:38 berryhil Exp $
 //
 //
 
@@ -80,6 +80,31 @@ class FourVectorHLTOffline : public edm::EDAnalyzer {
       unsigned int nBins_; 
       double ptMin_ ;
       double ptMax_ ;
+      
+      double electronEtaMax_;
+      double electronEtMin_;
+      double electronDRMatch_;
+      double muonEtaMax_;
+      double muonEtMin_;
+      double muonDRMatch_;
+      double tauEtaMax_;
+      double tauEtMin_;
+      double tauDRMatch_;
+      double jetEtaMax_;
+      double jetEtMin_;
+      double jetDRMatch_;
+      double bjetEtaMax_;
+      double bjetEtMin_;
+      double bjetDRMatch_;
+      double photonEtaMax_;
+      double photonEtMin_;
+      double photonDRMatch_;
+      double trackEtaMax_;
+      double trackEtMin_;
+      double trackDRMatch_;
+      double metMin_;
+      double htMin_;
+      double sumEtMin_;
       
       std::string dirname_;
       std::string processname_;
