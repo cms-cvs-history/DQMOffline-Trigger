@@ -17,11 +17,12 @@ process.options = cms.untracked.PSet(
 
 process.source = cms.Source("PoolSource",
     processingMode = cms.untracked.string('RunsAndLumis'),
-    fileNames = cms.untracked.vstring('file:EDM_jpsi_pre10_v2.root')
+    fileNames = cms.untracked.vstring('file:/data/ndpc0/b/slaunwhj/scratch0/EDM_jpsi_pre10_v2.root')
 )
 
 process.load('Configuration/StandardSequences/EDMtoMEAtJobEnd_cff')
 process.dqmSaver.workflow = '/BPAG/Post/Processor'
+process.dqmSaver.dirName = '/data/ndpc0/b/slaunwhj/scratch0/'
 process.path = cms.Path(process.EDMtoME*process.BPAGPostProcessor)
 
 process.endpath = cms.EndPath(process.DQMSaver)
