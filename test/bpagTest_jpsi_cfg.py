@@ -9,35 +9,23 @@ process.load("DQMServices.Components.MEtoEDMConverter_cfi")
 # load this thing to count bins
 process.load("DQMServices.Components.DQMStoreStats_cfi")
 
-
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(1000)
 )
 
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
-
-
-							# ---- J/PSI
-							# ---- Local
-							#fileNames = cms.untracked.vstring ( 'file:/data/ndpc0/b/slaunwhj/RelValJPsi/EA6BFAD3-505A-DE11-8313-0018F3D0961A.root',
-							#									'file:/data/ndpc0/b/slaunwhj/RelValJPsi/E4CFF5DE-6658-DE11-B9C1-0018F3D0970A.root',
-							#									'file:/data/ndpc0/b/slaunwhj/RelValJPsi/3ACDB108-C859-DE11-B62D-0018F3D09608.root'
-							#									),
-
-							# ---- Castor
-
-							fileNames = cms.untracked.vstring ( '/store/relval/CMSSW_3_1_0_pre10/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP_31X_v1/0001/EA6BFAD3-505A-DE11-8313-0018F3D0961A.root',
-																'/store/relval/CMSSW_3_1_0_pre10/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP_31X_v1/0001/E4CFF5DE-6658-DE11-B9C1-0018F3D0970A.root',
-																'/store/relval/CMSSW_3_1_0_pre10/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP_31X_v1/0001/3ACDB108-C859-DE11-B62D-0018F3D09608.root'
-															  ),
-
-
+    fileNames = cms.untracked.vstring ( 
+       '/store/relval/CMSSW_3_3_0_pre3/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V7-v1/0004/42E21769-32A2-DE11-A54F-00304867915A.root',
+       '/store/relval/CMSSW_3_3_0_pre3/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V7-v1/0003/A0B6EE13-CAA1-DE11-BE65-001A9281171E.root',
+       '/store/relval/CMSSW_3_3_0_pre3/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V7-v1/0003/9C0C4FF0-CCA1-DE11-91B6-001A92810AD4.root',
+       '/store/relval/CMSSW_3_3_0_pre3/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V7-v1/0003/2668C475-C9A1-DE11-A075-0018F3D096CA.root',
+       '/store/relval/CMSSW_3_3_0_pre3/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V7-v1/0003/1A413ED3-CAA1-DE11-8856-0018F3D09676.root',
+       '/store/relval/CMSSW_3_3_0_pre3/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V7-v1/0003/04965931-CCA1-DE11-A28F-001A92971BDA.root'
+    )
 )
 
 process.DQMStore = cms.Service("DQMStore")
-
-
 
 process.MessageLogger = cms.Service("MessageLogger",
     debugModules   = cms.untracked.vstring('*'),
@@ -51,10 +39,9 @@ process.MessageLogger = cms.Service("MessageLogger",
     destinations   = cms.untracked.vstring('cout')
 )
 
-
 process.out = cms.OutputModule("PoolOutputModule",
 	 outputCommands = cms.untracked.vstring('drop *', 'keep *_MEtoEDMConverter_*_*'),
-	 fileName = cms.untracked.string('file:/data/ndpc0/b/slaunwhj/scratch0/EDM_jpsi_pre10_vTest.root')
+	 fileName = cms.untracked.string('file:/tmp/jpsi.root')
 )
 
 process.analyzerpath = cms.Path(
