@@ -5,7 +5,7 @@ process = cms.Process('BPAGPOSTPROCESSOR')
 process.load('Configuration/StandardSequences/Services_cff')
 process.load('FWCore/MessageService/MessageLogger_cfi')
 process.load("DQMOffline.Trigger.BPAGPostProcessor_cff")
-process.JpsiTrigEff.SavePlotsInRootFileName = cms.untracked.string("/tmp/jpsiPlots.root")
+process.JpsiClient.SavePlotsInRootFileName = cms.untracked.string("/tmp/jpsiPlots.root")
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
@@ -21,9 +21,9 @@ process.source = cms.Source("PoolSource",
 )
 
 process.load('Configuration/StandardSequences/EDMtoMEAtJobEnd_cff')
-process.dqmSaver.workflow = '/BPAG/Post/Processor'
+process.dqmSaver.workflow = '/Jpsi/Post/Processor'
 process.dqmSaver.dirName = '/tmp/'
-process.path = cms.Path(process.EDMtoME*process.bPAGPostProcessor)
+process.path = cms.Path(process.EDMtoME*process.JpsiPostProcessor)
 
 process.endpath = cms.EndPath(process.DQMSaver)
 
