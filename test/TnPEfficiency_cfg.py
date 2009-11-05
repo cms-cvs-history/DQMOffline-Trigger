@@ -15,9 +15,8 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring ( 
-       '/store/relval/CMSSW_3_3_0/RelValJpsiMM_Pt_0_20/GEN-SIM-RECO/STARTUP31X_V8-v1/0002/FE7BCA5A-73B7-DE11-8BFE-001A92810ADE.root',
-       '/store/relval/CMSSW_3_3_0/RelValUpsMM/GEN-SIM-RECO/STARTUP31X_V8-v1/0001/A66A4B83-65B7-DE11-9ED7-001731EF61B4.root',
-       '/store/relval/CMSSW_3_3_0/RelValZMM/GEN-SIM-RECO/STARTUP31X_V8-v1/0009/BE1D1CF5-2FB7-DE11-915E-001D09F290CE.root'
+       '/store/relval/CMSSW_3_4_0_pre4/RelValZMM/GEN-SIM-RECO/STARTUP3X_V11-v1/0000/EA1E76E3-CCC7-DE11-9A27-000423D9989E.root',
+       '/store/relval/CMSSW_3_4_0_pre4/RelValJpsiMM/GEN-SIM-RECO/STARTUP3X_V11-v1/0000/C2751E35-44C8-DE11-9B85-000423D99B3E.root'
     )
 )
 
