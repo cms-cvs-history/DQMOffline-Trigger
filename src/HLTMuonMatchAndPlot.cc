@@ -7,8 +7,8 @@
  *    2. A trigger name
  *  
  *  $Author: slaunwhj $
- *  $Date: 2009/10/09 12:53:55 $
- *  $Revision: 1.10 $
+ *  $Date: 2009/11/11 08:36:13 $
+ *  $Revision: 1.13 $
  */
 
 
@@ -708,66 +708,66 @@ bool HLTMuonMatchAndPlot::selectAndMatchMuons (const Event & iEvent, vector<Matc
   vector<L1MuonParticleRef> l1Cands;
   
   InputTag collectionTag;
-  size_t   filterIndex;
+  //size_t   filterIndex;
 
 
   // Try to get the triggerSummaryRAW branch for
   // this event. If it's there, great, keep using it.
   // but if it isn't there, skip over it silently
 
-  LogTrace ("HLTMuonVal") << "Trying to get RAW information\n\n";
+//   LogTrace ("HLTMuonVal") << "Trying to get RAW information\n\n";
                           
-  iEvent.getByLabel( HltRawInputTag, rawTriggerEvent );
+//   iEvent.getByLabel( HltRawInputTag, rawTriggerEvent );
   
-  if ( rawTriggerEvent.isValid() ) { 
-    LogTrace("HLTMuonVal") << "\n\nRAW trigger summary found! "
-                           << "\n\nUsing RAW information";
+//   if ( rawTriggerEvent.isValid() ) { 
+//     LogTrace("HLTMuonVal") << "\n\nRAW trigger summary found! "
+//                            << "\n\nUsing RAW information";
     
-    collectionTag = InputTag( theL1CollectionLabel, "", theHltProcessName );
-    filterIndex   = rawTriggerEvent->filterIndex(collectionTag);
+//     collectionTag = InputTag( theL1CollectionLabel, "", theHltProcessName );
+//     filterIndex   = rawTriggerEvent->filterIndex(collectionTag);
 
 
-    if ( filterIndex < rawTriggerEvent->size() ) {
-      rawTriggerEvent->getObjects( filterIndex, TriggerL1Mu, l1Cands );
-      LogTrace ("HLTMuonVal") << "Found l1 raw cands for filter = " << filterIndex ;                              
+//     if ( filterIndex < rawTriggerEvent->size() ) {
+//       rawTriggerEvent->getObjects( filterIndex, TriggerL1Mu, l1Cands );
+//       LogTrace ("HLTMuonVal") << "Found l1 raw cands for filter = " << filterIndex ;                              
         
-    } else {
-      LogTrace("HLTMuonVal") << "No L1 Collection with label " 
-                                << collectionTag;
-    }
+//     } else {
+//       LogTrace("HLTMuonVal") << "No L1 Collection with label " 
+//                                 << collectionTag;
+//     }
     
-    //for ( size_t i = 0; i < l1Cands.size(); i++ ) 
-    //  l1Cands.push_back( l1Cands[i]->p4() );
-    LogTrace ("HLTMuonVal") << "Looking for information from  hltFilters";
+//     //for ( size_t i = 0; i < l1Cands.size(); i++ ) 
+//     //  l1Cands.push_back( l1Cands[i]->p4() );
+//     LogTrace ("HLTMuonVal") << "Looking for information from  hltFilters";
                             
-    for ( size_t i = 0; i < numHltLabels; i++ ) {
+//     for ( size_t i = 0; i < numHltLabels; i++ ) {
 
-      collectionTag = InputTag( theHltCollectionLabels[i], 
-                                "", theHltProcessName );
-      filterIndex   = rawTriggerEvent->filterIndex(collectionTag);
+//       collectionTag = InputTag( theHltCollectionLabels[i], 
+//                                 "", theHltProcessName );
+//       filterIndex   = rawTriggerEvent->filterIndex(collectionTag);
 
-      LogTrace ("HLTMuonVal") << "Looking for candidates for filter "
-                              << theHltCollectionLabels[i]
-                              << ", index = "
-                              << filterIndex;
+//       LogTrace ("HLTMuonVal") << "Looking for candidates for filter "
+//                               << theHltCollectionLabels[i]
+//                               << ", index = "
+//                               << filterIndex;
       
-      if ( filterIndex < rawTriggerEvent->size() )
-        rawTriggerEvent->getObjects( filterIndex, TriggerMuon, hltCands[i]);
-      else LogTrace("HLTMuonVal") << "No HLT Collection with label " 
-                                  << collectionTag;
+//       if ( filterIndex < rawTriggerEvent->size() )
+//         rawTriggerEvent->getObjects( filterIndex, TriggerMuon, hltCands[i]);
+//       else LogTrace("HLTMuonVal") << "No HLT Collection with label " 
+//                                   << collectionTag;
 
-      // JMS -- do we ever store this raw info in the MatchStruct?
+//       // JMS -- do we ever store this raw info in the MatchStruct?
       
 
-      // don't copy the hltCands into particles
-      // for ( size_t j = 0; j < hltCands[i].size(); j++ )
-      // hltParticles[i].push_back( hltCands[i][j]->p4() );
+//       // don't copy the hltCands into particles
+//       // for ( size_t j = 0; j < hltCands[i].size(); j++ )
+//       // hltParticles[i].push_back( hltCands[i][j]->p4() );
 
-    } // End loop over theHltCollectionLabels
-  }  else {
-    LogTrace ("HLTMuonVal") << "\n\nCouldn't find any RAW information for this event";
+//     } // End loop over theHltCollectionLabels
+//   }  else {
+//     LogTrace ("HLTMuonVal") << "\n\nCouldn't find any RAW information for this event";
                             
-  } // Done processing RAW summary information
+//   } // Done processing RAW summary information
     
 
 
