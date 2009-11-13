@@ -11,4 +11,4 @@
 #cmsRun muonPostProcessor_cfg.py print files='file:/data/ndpc1/b/slaunwhj/scratch0/EDM_qcdFlatPt_fullTnP.root' outputDir='/data/ndpc0/b/slaunwhj/scratch0/' workflow='/DQMGeneric/QCD_FlatPt/34X' maxEvents=-1 >&! /data/ndpc0/b/slaunwhj/scratch0/post.log
 #cmsRun muonPostProcessor_cfg.py print files='file:/data/ndpc1/b/slaunwhj/scratch0/EDM_minbias_fullTnP.root' outputDir='/data/ndpc0/b/slaunwhj/scratch0/' workflow='/DQMGeneric/MinBias/34X' maxEvents=-1 >&! /data/ndpc0/b/slaunwhj/scratch0/post.log
 
-cmsRun muonPostProcessor_cfg.py print files='file:/data/ndpc0/b/slaunwhj/scratch0/EDM_zmm_340pre4.root' outputDir='/data/ndpc0/b/slaunwhj/scratch0/' workflow='/DQMGeneric/PostProcess/Testv1' maxEvents=10 >&! /data/ndpc0/b/slaunwhj/scratch0/post.log
+cmsRun muonPostProcessor_cfg.py print files='file:/data/ndpc0/b/slaunwhj/scratch0/EDM_zmm_340pre4_numEvent100.root' outputDir='/data/ndpc0/b/slaunwhj/scratch0/' workflow='/DQMGeneric/PostProcess/Testv1' maxEvents=-1 >&! /data/ndpc0/b/slaunwhj/scratch0/post.log
