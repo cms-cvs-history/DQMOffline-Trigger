@@ -6,11 +6,14 @@ egHLTOffFiltersToMon = cms.PSet (
 
     eleHLTFilterNames=cms.vstring(
 
+    "hltPreL1SingleEG5",
+    "hltPreL1SingleEG8",
     #8E29
     #ele
     "hltL1NonIsoHLTNonIsoSingleElectronLWEt10PixelMatchFilter",
     "hltL1NonIsoHLTNonIsoSingleElectronLWEt10EleIdDphiFilter",
     "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter",
+   
     #double ele
     "hltL1NonIsoHLTNonIsoDoubleElectronEt5PixelMatchFilter",
 
@@ -57,7 +60,8 @@ egHLTOffFiltersToMon = cms.PSet (
     ),
                                 
     phoHLTFilterNames=cms.vstring(
-
+    "hltPreL1SingleEG5",
+    "hltPreL1SingleEG8",
     #8E29
     "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter",
     "hltL1NonIsoHLTNonIsoSinglePhotonEt15HcalIsolFilter",
