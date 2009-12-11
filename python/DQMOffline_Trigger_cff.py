@@ -23,15 +23,15 @@ from DQM.L1TMonitor.L1TDEMON_cfi import *
 l1temumonitor = cms.Sequence(l1demon) 
 
 # AlCa
-from DQM.HLTEvF.HLTAlCaMonPi0_cfi import *
-from DQM.HLTEvF.HLTAlCaMonEcalPhiSym_cfi import *
+#from DQM.HLTEvF.HLTAlCaMonPi0_cfi import *
+#from DQM.HLTEvF.HLTAlCaMonEcalPhiSym_cfi import *
 # JetMET
 from DQM.HLTEvF.HLTMonJetMET_E28_cfi import *
-from DQM.HLTEvF.HLTMonJetMETDQMSource_cfi import *
+#from DQM.HLTEvF.HLTMonJetMETDQMSource_cfi import *
 # Electron
-from DQM.HLTEvF.HLTMonEleBits_cfi import *
+#from DQM.HLTEvF.HLTMonEleBits_cfi import *
 # Muon
-from DQM.HLTEvF.HLTMonMuonDQM_cfi import *
+#from DQM.HLTEvF.HLTMonMuonDQM_cfi import *
 from DQM.HLTEvF.HLTMonMuonBits_cfi import *
 # Photon
 #from DQM.HLTEvF.HLTMonPhotonBits_cfi import *
@@ -46,7 +46,8 @@ from DQM.HLTEvF.HLTMonTau_cfi import *
 # *hltMonEleBits causes SegmentFaults in HARVESTING(step3) in inlcuded in step2
 
 #onlineHLTSource = cms.Sequence(EcalPi0Mon*EcalPhiSymMon*hltMonEleBits*hltMonMuBits*hltMonTauReco*hltMonBTagIPSource*hltMonBTagMuSource)
-onlineHLTSource = cms.Sequence(EcalPi0Mon*EcalPhiSymMon*hltMonMuBits*hltMonTauReco)
+#onlineHLTSource = cms.Sequence(EcalPi0Mon*EcalPhiSymMon*hltMonMuBits*hltMonTauReco)
+onlineHLTSource = cms.Sequence(hltMonMuBits*hltMonTauReco)
 
 
 # FourVector
