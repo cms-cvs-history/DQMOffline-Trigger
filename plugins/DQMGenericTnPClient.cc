@@ -45,7 +45,7 @@ DQMGenericTnPClient::DQMGenericTnPClient(const edm::ParameterSet& pset):
 void DQMGenericTnPClient::endRun(const edm::Run &run, const edm::EventSetup &setup){
   dqmStore = Service<DQMStore>().operator->();
   if( !dqmStore ){
-    LogError("DQMGenericTnPClient")<<"Could not find DQMStore service\n";
+    LogError("HLTriggerOfflineHeavyFlavor")<<"Could not find DQMStore service\n";
     return;
   }
   dqmStore->setCurrentFolder(myDQMrootFolder);
@@ -62,7 +62,7 @@ void DQMGenericTnPClient::calculateEfficiency(const ParameterSet& pset){
   MonitorElement *allME = dqmStore->get(allMEname);
   MonitorElement *passME = dqmStore->get(passMEname);
   if(allME==0 || passME==0){
-    LogDebug("DQMGenericTnPClient")<<"Could not find MEs: "<<allMEname<<" or "<<passMEname<<endl;
+    LogDebug("HLTriggerOfflineHeavyFlavor")<<"Could not find MEs: "<<allMEname<<" or "<<passMEname<<endl;
     return;
   }
   TH1 *all = allME->getTH1();
@@ -88,14 +88,14 @@ void DQMGenericTnPClient::calculateEfficiency(const ParameterSet& pset){
     );
     fitter = VPEfitter;
   }else{
-    LogError("DQMGenericTnPClient")<<"Fit function: "<<fitFunction<<" does not exist"<<endl;
+    LogError("HLTriggerOfflineHeavyFlavor")<<"Fit function: "<<fitFunction<<" does not exist"<<endl;
     return;
   }
   //check dimensions
   int dimensions = all->GetDimension();
   int massDimension = pset.getUntrackedParameter<int>("MassDimension");
   if(massDimension>dimensions){
-    LogError("DQMGenericTnPClient")<<"Monitoring Element "<<allMEname<<" has smaller dimension than "<<massDimension<<endl;
+    LogError("HLTriggerOfflineHeavyFlavor")<<"Monitoring Element "<<allMEname<<" has smaller dimension than "<<massDimension<<endl;
     return;
   }
   //figure out directory and efficiency names  
@@ -115,7 +115,7 @@ void DQMGenericTnPClient::calculateEfficiency(const ParameterSet& pset){
     TProfile* effChi2 = 0;
     TString error = fitter->calculateEfficiency((TH2*)pass, (TH2*)all, massDimension, eff, effChi2, plots?prefix+effName.c_str():"");
     if(error!=""){
-      LogError("DQMGenericTnPClient")<<error<<endl;
+      LogError("HLTriggerOfflineHeavyFlavor")<<error<<endl;
       return;
     }
     dqmStore->bookProfile(effName,eff);
@@ -127,7 +127,7 @@ void DQMGenericTnPClient::calculateEfficiency(const ParameterSet& pset){
     TProfile2D* effChi2 = 0;
     TString error = fitter->calculateEfficiency((TH3*)pass, (TH3*)all, massDimension, eff, effChi2, plots?prefix+effName.c_str():"");
     if(error!=""){
-      LogError("DQMGenericTnPClient")<<error<<endl;
+      LogError("HLTriggerOfflineHeavyFlavor")<<error<<endl;
       return;
     }
     dqmStore->bookProfile2D(effName,eff);
