@@ -6,13 +6,10 @@ hltTauDQMofflineProcess = "HLT"
 TauRefProducer = cms.EDProducer("HLTTauRefProducer",
 
                     PFTaus = cms.untracked.PSet(
-                            PFTauDiscriminators = cms.untracked.VInputTag(cms.InputTag("shrinkingConePFTauDiscriminationByLeadingTrackFinding"),
-                                                                          cms.InputTag("shrinkingConePFTauDiscriminationByLeadingTrackPtCut"),
-                                                                          cms.InputTag("shrinkingConePFTauDiscriminationByIsolation")
-                            ),
+                            PFTauDiscriminators = cms.untracked.VInputTag(cms.InputTag("fixedConePFTauDiscriminationByIsolation")),
                             doPFTaus = cms.untracked.bool(True),
-                            ptMin = cms.untracked.double(15.0),
-                            PFTauProducer = cms.untracked.InputTag("shrinkingConePFTauProducer")
+                            ptMin = cms.untracked.double(10.0),
+                            PFTauProducer = cms.untracked.InputTag("fixedConePFTauProducer")
                             ),
                     Electrons = cms.untracked.PSet(
                             ElectronCollection = cms.untracked.InputTag("gsfElectrons"),
