@@ -3137,7 +3137,7 @@ for(PathInfoCollection::iterator v = hltPathsEffWrtMB_.begin(); v!= hltPathsEffW
    title     = labelname+"Summary of trigger levels"; 
    MonitorElement * TriggerSummary = dbe->book1D(histoname.c_str(),title.c_str(),8, -0.5,7.5);
    std::string trigger[7] = {"Nevt","L1 failed", "L1 & HLT failed", "L1 failed but not HLT","L1 passed", "L1 & HLT passed","L1 passed but not HLT"};
-   for(int i =0; i < 8; i++)TriggerSummary->setBinLabel(i+1, trigger[i]);
+   for(int i =0; i < 7; i++)TriggerSummary->setBinLabel(i+1, trigger[i]);
   if((v->getTriggerType())=="SingleJet_Trigger")
    {
    histoname = labelname+"_JetPt"; 
