@@ -19,7 +19,7 @@
 // Rewritten by: Vladimir Rekovic
 //         Date:  May 2009
 //
-// $Id: FourVectorHLTOffline.h,v 1.53 2010/05/17 10:32:11 rekovic Exp $
+// $Id: FourVectorHLTOffline.h,v 1.54 2010/06/01 12:07:08 rekovic Exp $
 //
 //
 
@@ -886,6 +886,7 @@ void objMonData<T>::monitorL1(const int l1Index, FourVectorHLTOffline* fv)
       }
       else {
 
+        ++idtypeiter;
         continue;
 
       }
@@ -894,8 +895,8 @@ void objMonData<T>::monitorL1(const int l1Index, FourVectorHLTOffline* fv)
 
       matchL1Offline(l1FV, fv, NL1, NL1OffUM);
 
-     } // end if isL1TriggerType
-     ++idtypeiter;
+   } // end if isL1TriggerType
+   ++idtypeiter;
 
  } // end for l1ki
 
@@ -1062,7 +1063,7 @@ void objMonData<T>::monitorOnline(const int hltIndex, const int l1Index, FourVec
 	  }
 	  else {
 	
-	    return;
+	    continue;
 	
 	  }
     /*
