@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.79 2010/06/01 12:07:06 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.79.2.1 2010/06/21 09:49:44 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -346,16 +346,16 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   tauMon.pushL1TriggerType(TriggerL1ForJet);
   
   // photon Monitor
-  objMonData<reco::PhotonCollection> phoMon;
-  phoMon.setReco(photonHandle);
-  phoMon.setReco(fSelPhotonsHandle);
+  //objMonData<reco::PhotonCollection> phoMon;
+  //phoMon.setReco(photonHandle);
+  //phoMon.setReco(fSelPhotonsHandle);
   // -----------------------------------------------
   // Use RECO Electrons instead of RECO Photons 
   // to measure HLT_Photon efficiency
   // -----------------------------------------------
-  //objMonData<reco::GsfElectronCollection> phoMon;
-  //phoMon.setReco(fSelElectronsHandle);
-  //phoMon.setRecoEle(fSelElectronsHandle);
+  objMonData<reco::GsfElectronCollection> phoMon;
+  phoMon.setReco(fSelElectronsHandle);
+  phoMon.setRecoEle(fSelElectronsHandle);
   
 
   phoMon.setLimits(photonEtaMax_, photonEtMin_, photonDRMatch_, photonL1DRMatch_, dRMax_);
