@@ -1,4 +1,4 @@
-# $Id: FourVectorHLTOfflineClient_cfi.py,v 1.13 2010/06/01 11:37:08 rekovic Exp $
+# $Id: FourVectorHLTOfflineClient_cfi.py,v 1.13.2.1 2010/06/21 09:51:42 rekovic Exp $
 
 import FWCore.ParameterSet.Config as cms
 
@@ -13,58 +13,91 @@ hltFourVectorClient = cms.EDAnalyzer("FourVectorHLTClient",
              cms.PSet(
               pathname = cms.string("HLT_"),
               denompathname = cms.string("")  
+
              ),
              cms.PSet(
               pathname = cms.string("HLT_"),
-              denompathname = cms.string("MinBias")
+              denompathname = cms.string("MinBias")  
              ),
              cms.PSet(
               pathname = cms.string("EG"),
-              denompathname = cms.string("Mu")  
+              denompathname = cms.string("HLT_Mu")  
              ),
              cms.PSet(
               pathname = cms.string("EG"),
-              denompathname = cms.string("HLT_Mu3")  
+              denompathname = cms.string("HLT_Mu5")  
              ),
              cms.PSet(
               pathname = cms.string("Jet"),
-              denompathname = cms.string("Mu")
+              denompathname = cms.string("HLT_Mu")  
              ),
              cms.PSet(
               pathname = cms.string("Jet"),
-              denompathname = cms.string("HLT_Mu3")
+              denompathname = cms.string("HLT_Mu5")  
              ),
              cms.PSet(
               pathname = cms.string("Ele"),
-              denompathname = cms.string("Mu")
+              denompathname = cms.string("HLT_Mu")  
              ),
              cms.PSet(
               pathname = cms.string("Ele"),
-              denompathname = cms.string("HLT_Mu3")
+              denompathname = cms.string("HLT_Mu5")  
+             ),
+             cms.PSet(
+              pathname = cms.string("HLT_Ele"),
+              denompathname = cms.string("HLT_Activity_Ecal_SC7")  
+             ),
+             cms.PSet(
+              pathname = cms.string("HLT_Ele"),
+              denompathname = cms.string("HLT_Activity_Ecal_SC1")  
+             ),
+             cms.PSet(
+              pathname = cms.string("Ele"),
+              denompathname = cms.string("HLT_Jet")  
+             ),
+             cms.PSet(
+              pathname = cms.string("Ele"),
+              denompathname = cms.string("HLT_Jet50U")  
              ),
              cms.PSet(
               pathname = cms.string("Pho"),
-              denompathname = cms.string("Mu")  
+              denompathname = cms.string("HLT_Mu")  
              ),
              cms.PSet(
               pathname = cms.string("Pho"),
-              denompathname = cms.string("HLT_Mu3")  
+              denompathname = cms.string("HLT_Mu5")  
+             ),
+             cms.PSet(
+              pathname = cms.string("HLT_Pho"),
+              denompathname = cms.string("HLT_Activity_Ecal_SC7")  
+             ),
+             cms.PSet(
+              pathname = cms.string("HLT_Pho"),
+              denompathname = cms.string("HLT_Activity_Ecal_SC1")  
+             ),
+             cms.PSet(
+              pathname = cms.string("Pho"),
+              denompathname = cms.string("HLT_Jet")  
+             ),
+             cms.PSet(
+              pathname = cms.string("Pho"),
+              denompathname = cms.string("HLT_Jet50U")  
              ),
              cms.PSet(
               pathname = cms.string("Tau"),
-              denompathname = cms.string("Mu")  
+              denompathname = cms.string("HLT_Mu")  
              ),
              cms.PSet(
               pathname = cms.string("MET"),
-              denompathname = cms.string("Mu")  
+              denompathname = cms.string("HLT_Mu")  
              ),
              cms.PSet(
               pathname = cms.string("Mu"),
-              denompathname = cms.string("Jet")
+              denompathname = cms.string("HLT_Jet")  
              ),
              cms.PSet(
               pathname = cms.string("Mu"),
-              denompathname = cms.string("Jet15U")
+              denompathname = cms.string("HLT_Jet50U")  
              )
 
 #             cms.PSet(
