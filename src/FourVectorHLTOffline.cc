@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.79 2010/06/01 12:07:06 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.81 2010/07/26 09:32:11 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -57,6 +57,7 @@ FourVectorHLTOffline::FourVectorHLTOffline(const edm::ParameterSet& iConfig): cu
   nBinsOneOverEt_ = iConfig.getUntrackedParameter<unsigned int>("NbinsOneOverEt",10000);
   nLS_   = iConfig.getUntrackedParameter<unsigned int>("NLuminositySegments",10);
   LSsize_   = iConfig.getUntrackedParameter<double>("LuminositySegmentSize",23);
+  thresholdFactor_ = iConfig.getUntrackedParameter<double>("thresholdFactor",1.5);
 
   
   plotAll_ = iConfig.getUntrackedParameter<bool>("plotAll", false);
@@ -312,7 +313,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   //eleMon.setReco(gsfElectrons);
   eleMon.setReco(fSelElectronsHandle);
   eleMon.setRecoEle(fSelElectronsHandle);
-  eleMon.setLimits(electronEtaMax_, electronEtMin_, electronDRMatch_, electronL1DRMatch_, dRMax_);
+  eleMon.setLimits(electronEtaMax_, electronEtMin_, electronDRMatch_, electronL1DRMatch_, dRMax_, thresholdFactor_);
   
   eleMon.pushTriggerType(TriggerElectron);
   eleMon.pushTriggerType(TriggerL1NoIsoEG);
@@ -326,7 +327,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   //muoMon.setReco(muonHandle);
   muoMon.setReco(fSelMuonsHandle);
   muoMon.setRecoMu(fSelMuonsHandle);
-  muoMon.setLimits(muonEtaMax_, muonEtMin_, muonDRMatch_, muonL1DRMatch_, dRMax_);
+  muoMon.setLimits(muonEtaMax_, muonEtMin_, muonDRMatch_, muonL1DRMatch_, dRMax_, thresholdFactor_);
   
   muoMon.pushTriggerType(TriggerMuon);
   muoMon.pushTriggerType(TriggerL1Mu);
@@ -337,7 +338,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   objMonData<reco::CaloTauCollection>  tauMon;
   //tauMon.setReco(tauHandle);
   tauMon.setReco(fSelTausHandle);
-  tauMon.setLimits(tauEtaMax_, tauEtMin_, tauDRMatch_, tauL1DRMatch_, dRMax_);
+  tauMon.setLimits(tauEtaMax_, tauEtMin_, tauDRMatch_, tauL1DRMatch_, dRMax_, thresholdFactor_);
   
   tauMon.pushTriggerType(TriggerTau);
   tauMon.pushTriggerType(TriggerL1TauJet);
@@ -358,7 +359,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   //phoMon.setRecoEle(fSelElectronsHandle);
   
 
-  phoMon.setLimits(photonEtaMax_, photonEtMin_, photonDRMatch_, photonL1DRMatch_, dRMax_);
+  phoMon.setLimits(photonEtaMax_, photonEtMin_, photonDRMatch_, photonL1DRMatch_, dRMax_, thresholdFactor_);
   
   phoMon.pushTriggerType(TriggerPhoton);
 
@@ -369,7 +370,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   objMonData<reco::CaloJetCollection> jetMon;
   //jetMon.setReco(jetHandle);
   jetMon.setReco(fSelJetsHandle);
-  jetMon.setLimits(jetEtaMax_, jetEtMin_, jetDRMatch_, jetL1DRMatch_, dRMax_);
+  jetMon.setLimits(jetEtaMax_, jetEtMin_, jetDRMatch_, jetL1DRMatch_, dRMax_, thresholdFactor_);
 
   jetMon.pushTriggerType(TriggerJet);
   jetMon.pushTriggerType(TriggerL1CenJet);
@@ -384,7 +385,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   //btagIPMon.setReco(jetHandle);
   btagIPMon.setRecoB(bTagIPHandle);
   btagIPMon.setBJetsFlag(true);
-  btagIPMon.setLimits(bjetEtaMax_, bjetEtMin_, bjetDRMatch_, bjetL1DRMatch_, dRMax_);
+  btagIPMon.setLimits(bjetEtaMax_, bjetEtMin_, bjetDRMatch_, bjetL1DRMatch_, dRMax_, thresholdFactor_);
 
   btagIPMon.pushTriggerType(TriggerBJet);
   btagIPMon.pushTriggerType(TriggerJet);
@@ -397,7 +398,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   //btagMuMon.setReco(jetHandle);
   btagMuMon.setRecoB(bTagMuHandle);
   btagMuMon.setBJetsFlag(true);
-  btagMuMon.setLimits(bjetEtaMax_, bjetEtMin_, bjetDRMatch_, bjetL1DRMatch_, dRMax_);
+  btagMuMon.setLimits(bjetEtaMax_, bjetEtMin_, bjetDRMatch_, bjetL1DRMatch_, dRMax_, thresholdFactor_);
 
   btagMuMon.pushTriggerType(TriggerBJet);
   btagMuMon.pushTriggerType(TriggerJet);
@@ -413,7 +414,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   objMonData<reco::CaloMETCollection> metMon;
   //metMon.setReco(metHandle);
   metMon.setReco(fSelMetHandle);
-  metMon.setLimits(metEtaMax_, metMin_, metDRMatch_, metL1DRMatch_, dRMax_);
+  metMon.setLimits(metEtaMax_, metMin_, metDRMatch_, metL1DRMatch_, dRMax_, thresholdFactor_);
   
   metMon.pushTriggerType(TriggerMET);
 
@@ -424,7 +425,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   //tetMon.setReco(metHandle);
   tetMon.setReco(fSelMetHandle);
   //tetMon.setLimits(tetEtaMax_=999., tetEtMin_=10, tetDRMatch_=999);
-  tetMon.setLimits(999., 10., 999., 999., dRMax_);
+  tetMon.setLimits(999., 10., 999., 999., dRMax_, thresholdFactor_);
   
   tetMon.pushTriggerType(TriggerTET);
 
@@ -433,7 +434,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   // default Monitor
   //objMonData<trigger::TriggerEvent> defMon;
   objMonData<reco::CaloMETCollection> defMon;
-  defMon.setLimits(999., 3., 999., 999., dRMax_);
+  defMon.setLimits(999., 3., 999., 999., dRMax_, thresholdFactor_);
 
   // vector to hold monitors 
   // interface is through virtual class BaseMonitor
@@ -548,7 +549,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
     for(int i = 0; i < npath; ++i) {
 
-     if (triggerNames.triggerName(i).find(v->getDenomPath()) != std::string::npos && triggerResults->accept(i))
+     if (triggerResults->accept(i) && triggerNames.triggerName(i).find(v->getDenomPath()) != std::string::npos )
      { 
         denompassed = true;
         break;
@@ -623,7 +624,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     // did we pass the numerator path, i.e. HLT path?
     for(int i = 0; i < npath; ++i) {
 
-      if (triggerNames.triggerName(i) == v->getPath() && triggerResults->accept(i)) numpassed = true;
+      if ( triggerResults->accept(i) && triggerNames.triggerName(i) == v->getPath() ) numpassed = true;
 
     }
 
@@ -861,8 +862,8 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
           }
 
           // check that numerator exists
-          bool foundnumerator = false;
           for (unsigned int j=0; j!=n; ++j) {
+          bool foundnumerator = false;
 
             string pathname = hltConfig_.triggerName(j);
 
@@ -1561,6 +1562,10 @@ void FourVectorHLTOffline::fillHltMatrix(const edm::TriggerNames & triggerNames)
   // Fill HLTPassed Matrix bin (i,j) = (Any,Any)
   // --------------------------------------------------------
   int anyBinNumber = hist_2d->GetXaxis()->FindBin("HLT_Any");      
+
+  string groupBinLabel = "HLT_"+fGroupNamePathsPair[mi].first+"_Any";
+  int groupBinNumber = hist_2d->GetXaxis()->FindBin(groupBinLabel.c_str()); 
+
   // any triger accepted
   if(triggerResults_->accept()){
 
@@ -1575,17 +1580,22 @@ void FourVectorHLTOffline::fillHltMatrix(const edm::TriggerNames & triggerNames)
   // Main loop over paths
   // --------------------
 
-  for (int i=1; i< hist_2d->GetNbinsX();i++) { 
+  //for (int i=1; i< hist_2d->GetNbinsX();i++) 
+  for (unsigned int i=0; i< fGroupNamePathsPair[mi].second.size(); i++)
+  { 
 
-  string hltpathname =  hist_2d->GetXaxis()->GetBinLabel(i);
-
+    //string hltPathName =  hist_2d->GetXaxis()->GetBinLabel(i);
+    string hltPathName =  fGroupNamePathsPair[mi].second[i];
 
     // check if this is hlt path name
-    unsigned int pathByIndex = triggerNames.triggerIndex(hltpathname);
+    //unsigned int pathByIndex = triggerNames.triggerIndex(hltPathName);
+    unsigned int pathByIndex = triggerNames.triggerIndex(fGroupNamePathsPair[mi].second[i]);
     if(pathByIndex >= triggerResults_->size() ) continue;
 
     // check if its L1 passed
-    if(hasL1Passed(hltpathname,triggerNames)) groupL1Passed = true;
+    // comment out below but set groupL1Passed to true always
+    //if(hasL1Passed(hltPathName,triggerNames)) groupL1Passed = true;
+    //groupL1Passed = true;
 
     // Fill HLTPassed Matrix and HLTPassFail Matrix
     // --------------------------------------------------------
@@ -1593,23 +1603,32 @@ void FourVectorHLTOffline::fillHltMatrix(const edm::TriggerNames & triggerNames)
     if(triggerResults_->accept(pathByIndex)){
 
       groupPassed = true;
-      //groupL1Passed = true;
+      groupL1Passed = true;
 
-      if(groupPassed && !groupL1Passed) 
+      hist_2d->Fill(i,anyBinNumber-1);//binNumber1 = 0 = first filter
+      hist_2d->Fill(anyBinNumber-1,i);//binNumber1 = 0 = first filter
+
+      hist_2d->Fill(i,groupBinNumber-1);//binNumber1 = 0 = first filter
+      hist_2d->Fill(groupBinNumber-1,i);//binNumber1 = 0 = first filter
+     
+      hist_1d->Fill(i);//binNumber1 = 0 = first filter
+
+
+      //for (int j=1; j< hist_2d->GetNbinsY();j++) 
+      for (unsigned int j=0; j< fGroupNamePathsPair[mi].second.size(); j++)
+      { 
+
+        string crossHltPathName =  fGroupNamePathsPair[mi].second[j];
   
-      hist_2d->Fill(i-1,anyBinNumber-1);//binNumber1 = 0 = first filter
-      hist_2d->Fill(anyBinNumber-1,i-1);//binNumber1 = 0 = first filter
+        //unsigned int crosspathByIndex = triggerNames.triggerIndex(hist_2d->GetXaxis()->GetBinLabel(j));
+        //unsigned int crosspathByIndex = triggerNames.triggerIndex(crossHltPathName);
+        unsigned int crosspathByIndex = triggerNames.triggerIndex(fGroupNamePathsPair[mi].second[j]);
 
-      hist_1d->Fill(i-1);//binNumber1 = 0 = first filter
-
-      for (int j=1; j< hist_2d->GetNbinsY();j++) {
-  
-        unsigned int crosspathByIndex = triggerNames.triggerIndex(hist_2d->GetXaxis()->GetBinLabel(j));
         if(crosspathByIndex >= triggerResults_->size() ) continue;
   
         if(triggerResults_->accept(crosspathByIndex)){
   
-          hist_2d->Fill(i-1,j-1);//binNumber1 = 0 = first filter
+          hist_2d->Fill(i,j);//binNumber1 = 0 = first filter
   
         } // end if j path passed
   
@@ -1620,14 +1639,22 @@ void FourVectorHLTOffline::fillHltMatrix(const edm::TriggerNames & triggerNames)
 
   } // end for i
 
-  string groupBinLabel = "HLT_"+fGroupNamePathsPair[mi].first+"_Any";
-  int groupBinNumber = hist_2d->GetXaxis()->FindBin(groupBinLabel.c_str());      
-  if(groupPassed) hist_1d->Fill(groupBinNumber-1);//binNumber1 = 0 = first filter
+  if(groupPassed) {
+    
+    hist_1d->Fill(groupBinNumber-1);//binNumber1 = 0 = first filter
+    hist_1d->Fill(groupBinNumber-2);//binNumber1 = 0 = first filter -> Fill L1group as well
+    hist_2d->Fill(groupBinNumber-1,groupBinNumber-1);//binNumber1 = 0 = first filter
+    hist_2d->Fill(anyBinNumber-1,groupBinNumber-1);//binNumber1 = 0 = first filter
+    hist_2d->Fill(groupBinNumber-1,anyBinNumber-1);//binNumber1 = 0 = first filter
 
+  }
+
+  /*
   string groupL1BinLabel = "HLT_"+fGroupNamePathsPair[mi].first+"_L1_Any";
   int groupL1BinNumber = hist_2d->GetXaxis()->FindBin(groupL1BinLabel.c_str());      
 
   if(groupL1Passed) hist_1d->Fill(groupL1BinNumber-1);//binNumber1 = 0 = first filter
+  */
  } // end for mi
 
 }
@@ -2174,7 +2201,7 @@ int FourVectorHLTOffline::getTriggerTypeParsePathName(const string& pathname)
 
 	 if (pathname.find("MET") != std::string::npos) 
 	   objectType = trigger::TriggerMET;    
-	 if (pathname.find("SumET") != std::string::npos) 
+	 if (pathname.find("SumET") != std::string::npos || pathname.find("SumEt") != std::string::npos || pathname.find("ETT") != std::string::npos) 
 	   objectType = trigger::TriggerTET;    
 	 if (pathname.find("HT") != std::string::npos) 
 	   objectType = trigger::TriggerTET;    
