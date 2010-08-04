@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-# $Id: FourVectorHLTOffline_cfi.py,v 1.35.2.1 2010/06/21 09:51:42 rekovic Exp $
+# $Id: FourVectorHLTOffline_cfi.py,v 1.35.2.2 2010/07/29 12:44:15 rekovic Exp $
 hltResults = cms.EDAnalyzer("FourVectorHLTOffline",
     dirname = cms.untracked.string("HLT/FourVector/paths"),
     muonRecoCollectionName = cms.untracked.string("muons"),
@@ -64,7 +64,11 @@ hltResults = cms.EDAnalyzer("FourVectorHLTOffline",
              ),
              cms.PSet(
               pathname = cms.string("EG"),
-              denompathname = cms.string("HLT_Mu5")  
+              denompathname = cms.string("HLT_Mu7")  
+             ),
+             cms.PSet(
+              pathname = cms.string("EG"),
+              denompathname = cms.string("HLT_Mu9")  
              ),
              cms.PSet(
               pathname = cms.string("Jet"),
@@ -72,7 +76,11 @@ hltResults = cms.EDAnalyzer("FourVectorHLTOffline",
              ),
              cms.PSet(
               pathname = cms.string("Jet"),
-              denompathname = cms.string("HLT_Mu5")  
+              denompathname = cms.string("HLT_Mu7")  
+             ),
+             cms.PSet(
+              pathname = cms.string("Jet"),
+              denompathname = cms.string("HLT_Mu9")  
              ),
              cms.PSet(
               pathname = cms.string("Ele"),
@@ -80,23 +88,11 @@ hltResults = cms.EDAnalyzer("FourVectorHLTOffline",
              ),
              cms.PSet(
               pathname = cms.string("Ele"),
-              denompathname = cms.string("HLT_Mu5")  
-             ),
-             cms.PSet(
-              pathname = cms.string("HLT_Ele"),
-              denompathname = cms.string("HLT_Activity_Ecal_SC7")  
-             ),
-             cms.PSet(
-              pathname = cms.string("HLT_Ele"),
-              denompathname = cms.string("HLT_Activity_Ecal_SC1")  
+              denompathname = cms.string("HLT_Mu7")  
              ),
              cms.PSet(
               pathname = cms.string("Ele"),
-              denompathname = cms.string("HLT_Jet")  
-             ),
-             cms.PSet(
-              pathname = cms.string("Ele"),
-              denompathname = cms.string("HLT_Jet50U")  
+              denompathname = cms.string("HLT_Mu9")  
              ),
              cms.PSet(
               pathname = cms.string("Pho"),
@@ -104,23 +100,11 @@ hltResults = cms.EDAnalyzer("FourVectorHLTOffline",
              ),
              cms.PSet(
               pathname = cms.string("Pho"),
-              denompathname = cms.string("HLT_Mu5")  
-             ),
-             cms.PSet(
-              pathname = cms.string("HLT_Pho"),
-              denompathname = cms.string("HLT_Activity_Ecal_SC7")  
-             ),
-             cms.PSet(
-              pathname = cms.string("HLT_Pho"),
-              denompathname = cms.string("HLT_Activity_Ecal_SC1")  
+              denompathname = cms.string("HLT_Mu7")  
              ),
              cms.PSet(
               pathname = cms.string("Pho"),
-              denompathname = cms.string("HLT_Jet")  
-             ),
-             cms.PSet(
-              pathname = cms.string("Pho"),
-              denompathname = cms.string("HLT_Jet50U")  
+              denompathname = cms.string("HLT_Mu9")  
              ),
              cms.PSet(
               pathname = cms.string("Tau"),
@@ -138,6 +122,7 @@ hltResults = cms.EDAnalyzer("FourVectorHLTOffline",
               pathname = cms.string("Mu"),
               denompathname = cms.string("HLT_Jet50U")  
              )
+
     ),
     JetIDParams  = cms.PSet(
         useRecHits      = cms.bool(True),
