@@ -19,7 +19,7 @@
 // Rewritten by: Vladimir Rekovic
 //         Date:  May 2009
 //
-// $Id: FourVectorHLTOffline.h,v 1.54.2.1 2010/06/17 09:16:23 rekovic Exp $
+// $Id: FourVectorHLTOffline.h,v 1.54.2.2 2010/06/21 09:49:44 rekovic Exp $
 //
 //
 
@@ -916,15 +916,15 @@ void objMonData<T>::monitorL1(const int l1Index, FourVectorHLTOffline* fv)
 
 
 
-      if (fabs(l1FV.eta()) <= EtaMax_ && l1FV.pt() >= EtMin_)
-      { 
+      //if (fabs(l1FV.eta()) <= EtaMax_ && l1FV.pt() >= EtMin_)
+      //{ 
 
         NL1++;
 
         v_->getL1EtL1Histo()->Fill(l1FV.pt());
         v_->getL1EtaVsL1PhiL1Histo()->Fill(l1FV.eta(), l1FV.phi());
 
-      }
+      //}
       /*
       else {
 
@@ -1127,8 +1127,8 @@ void objMonData<T>::monitorOnline(const int hltIndex, const int l1Index, FourVec
 
 	  trigger::TriggerObject onlineFV = toc[*ki];
 	
-	  if (fabs(onlineFV.eta()) <= EtaMax_ && onlineFV.pt() >= EtMin_)
-	  { 
+	  //if (fabs(onlineFV.eta()) <= EtaMax_ && onlineFV.pt() >= EtMin_)
+	  //{ 
 	
 	    NOn++;    
 	
@@ -1136,7 +1136,7 @@ void objMonData<T>::monitorOnline(const int hltIndex, const int l1Index, FourVec
 	    v_->getOnOneOverEtOnHisto()->Fill(1./onlineFV.pt());
 	    v_->getOnEtaVsOnPhiOnHisto()->Fill(onlineFV.eta(), onlineFV.phi());
 	
-	  }
+	  //}
     /*
 	  else {
 	
