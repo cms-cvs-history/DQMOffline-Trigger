@@ -32,7 +32,6 @@
 #include "TPRegexp.h"
 
 using namespace edm;
-using namespace reco;
 using namespace std;
 
   
