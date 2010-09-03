@@ -127,7 +127,7 @@ class JetMETHLTOfflineSource : public edm::EDAnalyzer {
       std::vector<std::string> custompathname;
       std::vector<std::pair<std::string, std::string> > custompathnamepairs_;
         
-      reco::CaloJetCollection calojet; 
+      CaloJetCollection calojet; 
       HLTConfigProvider hltConfig_;
       edm::Handle<edm::TriggerResults> triggerResults_;
       edm::TriggerNames triggerNames_; // TriggerNames class
