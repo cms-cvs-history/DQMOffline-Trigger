@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.87 2010/09/03 11:05:26 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.91 2010/10/28 13:57:42 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -6,7 +6,6 @@
 
 #include <map>
 #include <utility>
-
 
 using namespace edm;
 using namespace trigger;
@@ -24,7 +23,8 @@ FourVectorHLTOffline::FourVectorHLTOffline(const edm::ParameterSet& iConfig): cu
   fSelectedPhotons = new reco::PhotonCollection;
   fSelectedJets = new reco::CaloJetCollection;
   fSelectedMet = new reco::CaloMETCollection;
-  fSelectedTaus = new reco::CaloTauCollection;
+  //fSelectedTaus = new reco::CaloTauCollection;
+  fSelectedTaus = new reco::PFTauCollection;
 
   dbe_ = Service < DQMStore > ().operator->();
   if ( ! dbe_ ) {
@@ -140,14 +140,52 @@ FourVectorHLTOffline::FourVectorHLTOffline(const edm::ParameterSet& iConfig): cu
 
   sumEtMin_ = iConfig.getUntrackedParameter<double>("sumEtMin",10.0);
 
-      // Muon quality cuts
-      dxyCut_ = iConfig.getUntrackedParameter<double>("DxyCut", 0.2);   // dxy < 0.2 cm 
-      normalizedChi2Cut_ = iConfig.getUntrackedParameter<double>("NormalizedChi2Cut", 10.); // chi2/ndof (of global fit) <10.0
-      trackerHitsCut_ = iConfig.getUntrackedParameter<int>("TrackerHitsCut", 11);  // Tracker Hits >10 
-      pixelHitsCut_ = iConfig.getUntrackedParameter<int>("PixelHitsCut", 1); // Pixel Hits >0
-      muonHitsCut_ = iConfig.getUntrackedParameter<int>("MuonHitsCut", 1);  // Valid Muon Hits >0 
-      isAlsoTrackerMuon_ = iConfig.getUntrackedParameter<bool>("IsAlsoTrackerMuon", true);
-      nMatchesCut_ = iConfig.getUntrackedParameter<int>("NMatchesCut", 2); // At least 2 Chambers with matches 
+  // Muon quality cuts
+  //////////////////////////
+  dxyCut_ = iConfig.getUntrackedParameter<double>("DxyCut", 0.2);   // dxy < 0.2 cm 
+  normalizedChi2Cut_ = iConfig.getUntrackedParameter<double>("NormalizedChi2Cut", 10.); // chi2/ndof (of global fit) <10.0
+  trackerHitsCut_ = iConfig.getUntrackedParameter<int>("TrackerHitsCut", 11);  // Tracker Hits >10 
+  pixelHitsCut_ = iConfig.getUntrackedParameter<int>("PixelHitsCut", 1); // Pixel Hits >0
+  muonHitsCut_ = iConfig.getUntrackedParameter<int>("MuonHitsCut", 1);  // Valid Muon Hits >0 
+  isAlsoTrackerMuon_ = iConfig.getUntrackedParameter<bool>("IsAlsoTrackerMuon", true);
+  nMatchesCut_ = iConfig.getUntrackedParameter<int>("NMatchesCut", 2); // At least 2 Chambers with matches 
+
+  // Electron quality cuts
+  //////////////////////////
+	eleMaxOver3x3_  =  iConfig.getUntrackedParameter<double>("eleMaxOver3x3", 0.9);
+  // Ecal Barrel
+  dr03TkSumPtEB_ =  iConfig.getUntrackedParameter<double>("dr03TkSumPtEB", 3.0);
+	dr04EcalRecHitSumEtEB_ = iConfig.getUntrackedParameter<double>("dr04EcalRecHitSumEtEB", 4.0);
+	dr04HcalTowerSumEtEB_ =  iConfig.getUntrackedParameter<double>("dr04HcalTowerSumEtEB", 5.0);
+	hadronicOverEmEB_ =    iConfig.getUntrackedParameter<double>("hadronicOverEmEB", 0.05);
+	deltaPhiSuperClusterTrackAtVtxEB_ = iConfig.getUntrackedParameter<double>("deltaPhiSuperClusterTrackAtVtxEB", 0.2);
+	deltaEtaSuperClusterTrackAtVtxEB_ = iConfig.getUntrackedParameter<double>("deltaEtaSuperClusterTrackAtVtxEB", 0.006);
+	sigmaIetaIetaEB_ = iConfig.getUntrackedParameter<double>("sigmaIetaIetaEB", 0.01);
+  //spikes
+	sigmaIetaIetaSpikesEB_ = iConfig.getUntrackedParameter<double>("sigmaIetaIetaSpikesEB", 0.002);
+
+  // Ecal Endcap
+	dr03TkSumPtEC_ =  iConfig.getUntrackedParameter<double>("dr03TkSumPtEC", 1.5);
+	dr04EcalRecHitSumEtEC_ = iConfig.getUntrackedParameter<double>("dr04EcalRecHitSumEtEC", 2.5);
+	dr04HcalTowerSumEtEC_ =  iConfig.getUntrackedParameter<double>("dr04HcalTowerSumEtEC", 0.7);
+	hadronicOverEmEC_ =  iConfig.getUntrackedParameter<double>("hadronicOverEmEC", 0.025);
+	deltaPhiSuperClusterTrackAtVtxEC_ = iConfig.getUntrackedParameter<double>("deltaPhiSuperClusterTrackAtVtxEC", 0.2);
+	deltaEtaSuperClusterTrackAtVtxEC_ = iConfig.getUntrackedParameter<double>("deltaEtaSuperClusterTrackAtVtxEC", 0.006);
+	sigmaIetaIetaEC_ = iConfig.getUntrackedParameter<double>("sigmaIetaIetaEC", 0.03);
+  //spikes
+	sigmaIetaIetaSpikesEC_ = iConfig.getUntrackedParameter<double>("sigmaIetaIetaSpikesEC", 0.002);
+
+  // Jet ID cuts
+  //////////////////////////
+  emEnergyFractionJet_ = iConfig.getUntrackedParameter<double>("emEnergyFractionJet",0.01);
+  fHPDJet_ = iConfig.getUntrackedParameter<double>("fHPDJet",0.98);
+  n90Jet_ = iConfig.getUntrackedParameter<int>("n90Jet",2);
+
+  // Tau discriminators
+  ////////////////////////////
+  tauDscrmtrLabel1_ = iConfig.getUntrackedParameter("tauDscrmtrLabel1", std::string("shrinkingConePFTauDiscriminationByLeadingTrackFinding"));
+  tauDscrmtrLabel2_ = iConfig.getUntrackedParameter("tauDscrmtrLabel2", std::string("shrinkingConePFTauDiscriminationByLeadingTrackPtCut"));
+  tauDscrmtrLabel3_ = iConfig.getUntrackedParameter("tauDscrmtrLabel3", std::string("shrinkingConePFTauDiscriminationByIsolation"));
 
   specialPaths_ = iConfig.getParameter<std::vector<std::string > >("SpecialPaths");
 
@@ -155,9 +193,10 @@ FourVectorHLTOffline::FourVectorHLTOffline(const edm::ParameterSet& iConfig): cu
   pathsSummaryHLTCorrelationsFolder_ = iConfig.getUntrackedParameter ("hltCorrelationsFolder",std::string("HLT/FourVector/PathsSummary/HLT Correlations/"));
   pathsSummaryFilterCountsFolder_ = iConfig.getUntrackedParameter ("filterCountsFolder",std::string("HLT/FourVector/PathsSummary/Filters Counts/"));
 
-  pathsSummaryHLTPathsPerLSFolder_ = iConfig.getUntrackedParameter ("individualPathsPerLSFolder",std::string("HLT/FourVector/PathsSummary/HLT LS/"));
+  pathsSummaryHLTPathsPerLSFolder_ = iConfig.getUntrackedParameter ("pathsPerLSFolder",std::string("HLT/FourVector/PathsSummary/HLT LS/"));
   pathsIndividualHLTPathsPerLSFolder_ = iConfig.getUntrackedParameter ("individualPathsPerLSFolder",std::string("HLT/FourVector/PathsSummary/HLT LS/Paths/"));
   pathsSummaryHLTPathsPerBXFolder_ = iConfig.getUntrackedParameter ("individualPathsPerBXFolder",std::string("HLT/FourVector/PathsSummary/HLT BX/"));
+
 
   fLumiFlag = true;
   ME_HLTAll_LS = NULL;
@@ -274,11 +313,13 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     edm::LogInfo("FourVectorHLTOffline") << "gsfElectrons not found, ";
   selectElectrons(iEvent, iSetup, gsfElectrons);
 
-  edm::Handle<reco::CaloTauCollection> tauHandle;
+  //edm::Handle<reco::CaloTauCollection> tauHandle;
+  edm::Handle<reco::PFTauCollection> tauHandle;
   iEvent.getByLabel("caloRecoTauProducer",tauHandle);
   if(!tauHandle.isValid()) 
     edm::LogInfo("FourVectorHLTOffline") << "tauHandle not found, ";
-  selectTaus(tauHandle);
+  //selectTaus(tauHandle);
+  selectTaus(iEvent);
 
   edm::Handle<reco::CaloJetCollection> jetHandle;
   iEvent.getByLabel("iterativeCone5CaloJets",jetHandle);
@@ -352,7 +393,8 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   muoMon.pushL1TriggerType(TriggerL1Mu);
   
   // tau Monitor
-  objMonData<reco::CaloTauCollection>  tauMon;
+  //objMonData<reco::CaloTauCollection>  tauMon;
+  objMonData<reco::PFTauCollection>  tauMon;
   //tauMon.setReco(tauHandle);
   tauMon.setReco(fSelTausHandle);
   tauMon.setLimits(tauEtaMax_, tauEtMin_, tauDRMatch_, tauL1DRMatch_, dRMax_, thresholdFactor_);
@@ -508,7 +550,7 @@ FourVectorHLTOffline::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
       //if(hasHLTPassed(fCustomBXPath,triggerNames)) {
 
-        ME_HLT_CUSTOM_BX->Fill(bx,pathBinNumber-1);
+        //ME_HLT_CUSTOM_BX->Fill(bx,pathBinNumber-1);
 
       //}
 
@@ -935,17 +977,12 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
     } // end else
 
 
-    vector<string> muonPaths;
-    vector<string> egammaPaths;
-    vector<string> tauPaths;
-    vector<string> jetmetPaths;
-    vector<string> restPaths;
     vector<string> allPaths;
     // fill vectors of Muon, Egamma, JetMet, Rest, and Special paths
     for(PathInfoCollection::iterator v = hltPathsDiagonal_.begin(); v!= hltPathsDiagonal_.end(); ++v ) {
 
       std::string pathName = v->getPath();
-      int objectType = v->getObjectType();
+      //int objectType = v->getObjectType();
 
       vector<int> tempCount(5,0);
 
@@ -954,40 +991,11 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
 
       allPaths.push_back(pathName);
 
-      switch (objectType) {
-        case trigger::TriggerMuon :
-          muonPaths.push_back(pathName);
-          break;
-
-        case trigger::TriggerElectron :
-        case trigger::TriggerPhoton :
-          egammaPaths.push_back(pathName);
-          break;
-
-        case trigger::TriggerTau :
-          tauPaths.push_back(pathName);
-          break;
-
-        case trigger::TriggerJet :
-        case trigger::TriggerMET :
-          jetmetPaths.push_back(pathName);
-          break;
-
-        default:
-          restPaths.push_back(pathName);
-      }
-
     }
 
     fPathTempCountPair.push_back(make_pair("HLT_Any",0));
 
     fGroupName.push_back("All");
-    fGroupName.push_back("Muon");
-    fGroupName.push_back("Egamma");
-    fGroupName.push_back("Tau");
-    fGroupName.push_back("JetMet");
-    fGroupName.push_back("Rest");
-    fGroupName.push_back("Special");
 
     for(unsigned int g=0; g<fGroupName.size(); g++) {
 
@@ -998,21 +1006,7 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
   
     dbe_->setCurrentFolder(pathsSummaryFolder_.c_str());
 
-
-
     fGroupNamePathsPair.push_back(make_pair("All",allPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Muon",muonPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Egamma",egammaPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Tau",tauPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("JetMet",jetmetPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Rest",restPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Special",specialPaths_));
 
     /// add dataset name and thier triggers to the list 
     vector<string> datasetNames =  hltConfig_.datasetNames() ;
@@ -1513,16 +1507,6 @@ void FourVectorHLTOffline::setupHltMatrix(const std::string& label, vector<std::
     /// add this path to the vector of 2D LS paths
     v_ME_HLTAll_LS.push_back(ME_Group_LS);
 
-    h_name= "HLT_"+label+"_L1_Total_LS";
-    h_title = label+" HLT paths total count combined per LS ";
-    MonitorElement* ME_Total_L1_LS = dbe_->book1D(h_name.c_str(), h_title.c_str(), nLS_, 0, nLS_);
-    ME_Total_L1_LS->setAxisTitle("LS");
-
-    h_name= "HLT_"+label+"_L1_LS";
-    h_title = label+" HLT L1s count per LS ";
-    MonitorElement* ME_Group_L1_LS = dbe_->book2D(h_name.c_str(), h_title.c_str(), nLS_, 0, nLS_, paths.size(), -0.5, paths.size()-0.5);
-    ME_Group_L1_LS->setAxisTitle("LS");
-
     dbe_->setCurrentFolder(pathsSummaryHLTPathsPerBXFolder_.c_str());
     h_name= "HLT_"+label+"_BX_LS";
     h_title = label+" HLT paths total count combined per BX ";
@@ -1686,18 +1670,20 @@ void FourVectorHLTOffline::setupHltBxPlots()
   ME_HLT_BX = dbe_->book2D("HLT_bx",
                          "HLT counts vs Event bx",
                          Nbx_+1, -0.5, Nbx_+1-0.5, npaths, -0.5, npaths-0.5);
+  /*
   ME_HLT_CUSTOM_BX = dbe_->book2D("HLT_Custom_bx",
                          "HLT counts vs Event bx",
                          Nbx_+1, -0.5, Nbx_+1-0.5, npaths, -0.5, npaths-0.5);
+                         */
   ME_HLT_BX->setAxisTitle("Bunch Crossing");
-  ME_HLT_CUSTOM_BX->setAxisTitle("Bunch Crossing");
+  //ME_HLT_CUSTOM_BX->setAxisTitle("Bunch Crossing");
 
 
   // Set up bin labels on Y axis continuing to cover all npaths
   for(unsigned int i = 0; i < npaths; i++){
 
     ME_HLT_BX->getTH2F()->GetYaxis()->SetBinLabel(i+1, (hltPathsDiagonal_[i]).getPath().c_str());
-    ME_HLT_CUSTOM_BX->getTH2F()->GetYaxis()->SetBinLabel(i+1, (hltPathsDiagonal_[i]).getPath().c_str());
+    //ME_HLT_CUSTOM_BX->getTH2F()->GetYaxis()->SetBinLabel(i+1, (hltPathsDiagonal_[i]).getPath().c_str());
 
   }
 
@@ -2347,24 +2333,27 @@ void FourVectorHLTOffline::selectElectrons(const edm::Event& iEvent, const edm::
       
       EcalClusterLazyTools lazyTool(iEvent, iSetup, recHitsEBTag_, recHitsEETag_); 
       const reco::CaloCluster* bc = iter->superCluster()->seed().get(); // get the basic cluster
-      //eleMaxOver3x3_.push_back( lazyTool.eMax(*bc) / lazyTool.e3x3(*bc)  );
+      
       float eleMaxOver3x3 = ( lazyTool.eMax(*bc) / lazyTool.e3x3(*bc)  );
 
-      if(eleMaxOver3x3 > 0.9) continue;
+      // Only ecalDriven electrons
+      if(! iter->ecalDriven() ) continue;
+
+      if(eleMaxOver3x3 > eleMaxOver3x3_) continue;
 
       // Barrel 
       if(iter->isEB()) {
 
         if (
-				  iter->dr03TkSumPt()         < 3.0 && // 7.0 && 
-				  iter->dr04EcalRecHitSumEt() < 4.0 && // 5.0 &&
-				  iter->dr04HcalTowerSumEt()  < 5.0 &&
-				  iter->hadronicOverEm()      < 0.05 &&
-				  fabs(iter->deltaPhiSuperClusterTrackAtVtx()) < 02 && // 0.8 &&
-				  fabs(iter->deltaEtaSuperClusterTrackAtVtx()) < 0.006 &&
-				  iter->sigmaIetaIeta() < 0.01 &&
+				  iter->dr03TkSumPt()         < dr03TkSumPtEB_ && 
+				  iter->dr04EcalRecHitSumEt() < dr04EcalRecHitSumEtEB_ && 
+				  iter->dr04HcalTowerSumEt()  < dr04HcalTowerSumEtEB_ &&
+				  iter->hadronicOverEm()      < hadronicOverEmEB_ &&
+				  fabs(iter->deltaPhiSuperClusterTrackAtVtx()) < deltaPhiSuperClusterTrackAtVtxEB_ && 
+				  fabs(iter->deltaEtaSuperClusterTrackAtVtx()) < deltaEtaSuperClusterTrackAtVtxEB_ &&
+				  iter->sigmaIetaIeta() < sigmaIetaIetaEB_ &&
           //spikes
-				  iter->sigmaIetaIeta() > 0.002
+				  iter->sigmaIetaIeta() > sigmaIetaIetaSpikesEB_
         ) {
 
             fSelectedElectrons->push_back(*iter);
@@ -2376,15 +2365,15 @@ void FourVectorHLTOffline::selectElectrons(const edm::Event& iEvent, const edm::
       // EndCap
       else if(iter->isEE()) {
         if (
-				  iter->dr03TkSumPt()         < 1.5 && // 8.0 && 
-				  iter->dr04EcalRecHitSumEt() < 2.5 && // 3.0 &&
-				  iter->dr04HcalTowerSumEt()  < 0.7 && // 2.0 &&
-				  iter->hadronicOverEm()      < 0.025 && // 0.04 &&
-				  fabs(iter->deltaPhiSuperClusterTrackAtVtx()) < 0.2 && // 0.7 &&
-				  fabs(iter->deltaEtaSuperClusterTrackAtVtx()) < 0.006 && // 0.008 &&
-				  iter->sigmaIetaIeta() < 0.03 && 
+				  iter->dr03TkSumPt()         < dr03TkSumPtEC_ && 
+				  iter->dr04EcalRecHitSumEt() < dr04EcalRecHitSumEtEC_ && 
+				  iter->dr04HcalTowerSumEt()  < dr04HcalTowerSumEtEC_ && 
+				  iter->hadronicOverEm()      < hadronicOverEmEC_ && 
+				  fabs(iter->deltaPhiSuperClusterTrackAtVtx()) < deltaPhiSuperClusterTrackAtVtxEC_ && 
+				  fabs(iter->deltaEtaSuperClusterTrackAtVtx()) < deltaEtaSuperClusterTrackAtVtxEC_ && 
+				  iter->sigmaIetaIeta() < sigmaIetaIetaEC_ && 
           //spikes
-				  iter->sigmaIetaIeta() > 0.002
+				  iter->sigmaIetaIeta() > sigmaIetaIetaSpikesEC_
         ) {
 
             fSelectedElectrons->push_back(*iter);
@@ -2447,10 +2436,9 @@ void FourVectorHLTOffline::selectJets(const edm::Event& iEvent, const edm::Handl
     {
 
        jetID->calculate(iEvent, *iter);
-       if (iter->emEnergyFraction() > 0.01 &&
-           //iter->fHPD() < 0.98 &&
-           jetID->fHPD() < 0.98 &&
-           iter->n90() >= 2 
+       if (iter->emEnergyFraction() > emEnergyFractionJet_ &&
+           jetID->fHPD() < fHPDJet_ &&
+           iter->n90() >= n90Jet_ 
            ){ 
 
                 fSelectedJets->push_back(*iter);
@@ -2489,27 +2477,51 @@ void FourVectorHLTOffline::selectMet(const edm::Handle<reco::CaloMETCollection> 
 
 }
 
-void FourVectorHLTOffline::selectTaus(const edm::Handle<reco::CaloTauCollection> & tauHandle)
+
+void FourVectorHLTOffline::selectTaus(const edm::Event& iEvent)
 {
   // for every event, first clear vector of selected objects
   fSelectedTaus->clear();
 
-  if(tauHandle.isValid()) { 
+  //first read the tau collection
+  edm::Handle<reco::PFTauCollection> tauHandle;  
+  iEvent.getByLabel("shrinkingConePFTauProducer",tauHandle);
 
-    for( reco::CaloTauCollection::const_iterator iter = tauHandle->begin(), iend = tauHandle->end(); iter != iend; ++iter )
-    {
+  //Now access a discriminator and see if it passed the tag
+  edm::Handle<reco::PFTauDiscriminator> dscrmt1H;
+  iEvent.getByLabel(tauDscrmtrLabel1_,dscrmt1H);
+  edm::Handle<reco::PFTauDiscriminator> dscrmt2H;
+  iEvent.getByLabel(tauDscrmtrLabel2_,dscrmt2H);
+  edm::Handle<reco::PFTauDiscriminator> dscrmt3H;
+  iEvent.getByLabel(tauDscrmtrLabel3_,dscrmt3H);
 
-      fSelectedTaus->push_back(*iter);
+  if(tauHandle.isValid() && dscrmt1H.isValid() && dscrmt2H.isValid() && dscrmt3H.isValid()) { 
+
+    for(unsigned int i=0;i<tauHandle->size();++i) {
+
+        //create a ref to the PF Tau 
+        reco::PFTauRef pfTauRef(tauHandle,i);
+
+        float outputDiscmnt1 = (*dscrmt1H)[pfTauRef]; // this should be >0.5 to pass
+        float outputDiscmnt2 = (*dscrmt2H)[pfTauRef]; // this should be >0.5 to pass
+        float outputDiscmnt3 = (*dscrmt3H)[pfTauRef]; // this should be >0.5 to pass
+
+        if(outputDiscmnt1>0.5 && outputDiscmnt2>0.5 && outputDiscmnt3 >0.5) {
+
+          fSelectedTaus->push_back((*tauHandle)[i]);
+
+        }
 
     } // end for
+
   
-    edm::Handle<reco::CaloTauCollection> localSelTauHandle(fSelectedTaus,tauHandle.provenance());
+    edm::Handle<reco::PFTauCollection> localSelTauHandle(fSelectedTaus,tauHandle.provenance());
     fSelTausHandle = localSelTauHandle;
 
   } // end if
 
-
 }
+
 
 int FourVectorHLTOffline::getHltThresholdFromName(const string & name)
 {
