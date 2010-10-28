@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.87 2010/09/03 11:05:26 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.88 2010/09/03 13:10:06 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -954,29 +954,6 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
 
       allPaths.push_back(pathName);
 
-      switch (objectType) {
-        case trigger::TriggerMuon :
-          muonPaths.push_back(pathName);
-          break;
-
-        case trigger::TriggerElectron :
-        case trigger::TriggerPhoton :
-          egammaPaths.push_back(pathName);
-          break;
-
-        case trigger::TriggerTau :
-          tauPaths.push_back(pathName);
-          break;
-
-        case trigger::TriggerJet :
-        case trigger::TriggerMET :
-          jetmetPaths.push_back(pathName);
-          break;
-
-        default:
-          restPaths.push_back(pathName);
-      }
-
     }
 
     fPathTempCountPair.push_back(make_pair("HLT_Any",0));
@@ -1512,16 +1489,6 @@ void FourVectorHLTOffline::setupHltMatrix(const std::string& label, vector<std::
     ME_Group_LS->setAxisTitle("LS");
     /// add this path to the vector of 2D LS paths
     v_ME_HLTAll_LS.push_back(ME_Group_LS);
-
-    h_name= "HLT_"+label+"_L1_Total_LS";
-    h_title = label+" HLT paths total count combined per LS ";
-    MonitorElement* ME_Total_L1_LS = dbe_->book1D(h_name.c_str(), h_title.c_str(), nLS_, 0, nLS_);
-    ME_Total_L1_LS->setAxisTitle("LS");
-
-    h_name= "HLT_"+label+"_L1_LS";
-    h_title = label+" HLT L1s count per LS ";
-    MonitorElement* ME_Group_L1_LS = dbe_->book2D(h_name.c_str(), h_title.c_str(), nLS_, 0, nLS_, paths.size(), -0.5, paths.size()-0.5);
-    ME_Group_L1_LS->setAxisTitle("LS");
 
     dbe_->setCurrentFolder(pathsSummaryHLTPathsPerBXFolder_.c_str());
     h_name= "HLT_"+label+"_BX_LS";
@@ -2351,6 +2318,9 @@ void FourVectorHLTOffline::selectElectrons(const edm::Event& iEvent, const edm::
       float eleMaxOver3x3 = ( lazyTool.eMax(*bc) / lazyTool.e3x3(*bc)  );
 
       if(eleMaxOver3x3 > 0.9) continue;
+
+      // Only ecalDriven electrons
+      if(! iter->ecalDriven() ) continue;
 
       // Barrel 
       if(iter->isEB()) {
