@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.88 2010/09/03 13:10:06 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.88.2.1 2010/10/28 15:15:09 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -945,7 +945,6 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
     for(PathInfoCollection::iterator v = hltPathsDiagonal_.begin(); v!= hltPathsDiagonal_.end(); ++v ) {
 
       std::string pathName = v->getPath();
-      int objectType = v->getObjectType();
 
       vector<int> tempCount(5,0);
 
@@ -978,18 +977,6 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
 
 
     fGroupNamePathsPair.push_back(make_pair("All",allPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Muon",muonPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Egamma",egammaPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Tau",tauPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("JetMet",jetmetPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Rest",restPaths));
-
-    fGroupNamePathsPair.push_back(make_pair("Special",specialPaths_));
 
     /// add dataset name and thier triggers to the list 
     vector<string> datasetNames =  hltConfig_.datasetNames() ;
