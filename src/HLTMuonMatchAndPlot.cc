@@ -1,8 +1,8 @@
  /** \file DQMOffline/Trigger/HLTMuonMatchAndPlot.cc
  *
  *  $Author: klukas $
- *  $Date: 2011/01/03 21:10:33 $
- *  $Revision: 1.20 $
+ *  $Date: 2011/03/21 20:10:41 $
+ *  $Revision: 1.22 $
  */
 
 
@@ -217,12 +217,17 @@ void HLTMuonMatchAndPlot::analyze(const Event & iEvent,
       }
       
       if (muon.pt() > cutMinPt && fabs(muon.eta()) < plotCuts_["maxEta"]) {
-        double d0 = muon.innerTrack()->dxy(beamSpot->position());
-        double z0 = muon.innerTrack()->dz(beamSpot->position());
-        hists_["efficiencyPhi_" + suffix]->Fill(muon.phi());
-        hists_["efficiencyD0_" + suffix]->Fill(d0);
-        hists_["efficiencyZ0_" + suffix]->Fill(z0);
-        hists_["efficiencyCharge_" + suffix]->Fill(muon.charge());
+        const Track * track = 0;
+        if (muon.isTrackerMuon()) track = & * muon.innerTrack();
+        else if (muon.isStandAloneMuon()) track = & * muon.outerTrack();
+        if (track) {
+          double d0 = track->dxy(beamSpot->position());
+          double z0 = track->dz(beamSpot->position());
+          hists_["efficiencyPhi_" + suffix]->Fill(muon.phi());
+          hists_["efficiencyD0_" + suffix]->Fill(d0);
+          hists_["efficiencyZ0_" + suffix]->Fill(z0);
+          hists_["efficiencyCharge_" + suffix]->Fill(muon.charge());
+        }
       }
       
       // Fill plots for tag and probe
@@ -383,9 +388,12 @@ HLTMuonMatchAndPlot::selectedMuons(const MuonCollection & allMuons,
   MuonCollection reducedMuons(allMuons);
   MuonCollection::iterator iter = reducedMuons.begin();
   while (iter != reducedMuons.end()) {
-    if (selector(* iter) &&
-        fabs(iter->innerTrack()->dxy(beamSpot.position())) < d0Cut &&
-        fabs(iter->innerTrack()->dz(beamSpot.position())) < z0Cut)
+    const Track * track = 0;
+    if (iter->isTrackerMuon()) track = & * iter->innerTrack();
+    else if (iter->isStandAloneMuon()) track = & * iter->outerTrack();
+    if (track && selector(* iter) &&
+        fabs(track->dxy(beamSpot.position())) < d0Cut &&
+        fabs(track->dz(beamSpot.position())) < z0Cut)
       ++iter;
     else reducedMuons.erase(iter);
   }
