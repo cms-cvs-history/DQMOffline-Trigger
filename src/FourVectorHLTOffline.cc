@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.92 2010/10/28 14:27:01 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.95 2011/03/29 11:07:40 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -1043,7 +1043,7 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
        vector<string> moduleNames = hltConfig_.moduleLabels( v->getPath() ); 
        
        int numModule = 0;
-       string moduleName, moduleType;
+       string moduleName, moduleType, moduleEDMType;
        unsigned int moduleIndex;
        
        //print module name
@@ -1052,11 +1052,13 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
 
          moduleName = *iDumpModName;
          moduleType = hltConfig_.moduleType(moduleName);
+         moduleEDMType = hltConfig_.moduleEDMType(moduleName);
          moduleIndex = hltConfig_.moduleIndex(v->getPath(), moduleName);
 
          LogTrace ("FourVectorHLTOffline") << "Module "      << numModule
              << " is called " << moduleName
              << " , type = "  << moduleType
+             << " , EDMtype = " << moduleEDMType 
              << " , index = " << moduleIndex
              << endl;
 
@@ -1066,7 +1068,8 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
             (moduleType.find("Associator") != string::npos) || 
             (moduleType.find("HLTLevel1GTSeed") != string::npos) || 
             (moduleType.find("HLTGlobalSumsCaloMET") != string::npos) ||
-            (moduleType.find("HLTPrescaler") != string::npos) ) {
+            (moduleType.find("HLTPrescaler") != string::npos) || 
+            (moduleEDMType.find("EDFilter") != string::npos) ) {
 
            //std::pair<std::string, int> filterIndexPair;
            //filterIndexPair.first   = moduleName;
@@ -1383,37 +1386,47 @@ void FourVectorHLTOffline::cleanDRMatchSet(mmset& tempSet)
   
       // from all the other maps, clean entries that have mapped value "topValue"
       // loop j
-      for ( mmset::iterator setIter_j = ++tempIter_i; setIter_j != tempSet.end( ); setIter_j++ ) {
+      mmset::iterator setIter_j = ++tempIter_i;
+      while ( setIter_j != tempSet.end( ) ) {
   
         fimmap tempMap_j = *setIter_j;
         //LogTrace("FourVectorHLTOffline") << "  size of the map  = " << tempMap_j.size() << endl;
   
-        for (fimmap::iterator it = tempMap_j.begin(); it != tempMap_j.end(); ++it)
-        {
+        fimmap::iterator it = tempMap_j.begin();
+        while ( it != tempMap_j.end() ) {
   
           if(topValue == (*it).second) {
             
             //LogTrace("FourVectorHLTOffline") << "   Ridding map of a doubly-matched object." << endl;
-            tempMap_j.erase(it);
+            fimmap::iterator tempIt = it;
+            ++it; //no longer points to item that is going away
+            tempMap_j.erase(tempIt);
             cleanedOneMap = true;
   
-          }
-  
-        } //end for
+          } else {
+            ++it;
+          } // end if
+
+        } //end while
   
         if(cleanedOneMap) {
           
           //remove the old map from the set
-          tempSet.erase(setIter_j);
+          mmset::iterator tempIt = setIter_j;
+          ++setIter_j; //no longer points to item that is going away
+          tempSet.erase(tempIt);
   
           // insert in the set the new map if it is not an empty map
           if(! tempMap_j.empty()) tempSet.insert(tempMap_j);
   
           break; // break from loop j
   
+       } else {
+         ++setIter_j;
        } // end if
+
   
-      }// end loop j 
+      }// end while j
   
       if(cleanedOneMap) break; // break from loop i
 
@@ -2332,15 +2345,26 @@ void FourVectorHLTOffline::selectElectrons(const edm::Event& iEvent, const edm::
     for( reco::GsfElectronCollection::const_iterator iter = eleHandle->begin(), iend = eleHandle->end(); iter != iend; ++iter )
     {
       
-      EcalClusterLazyTools lazyTool(iEvent, iSetup, recHitsEBTag_, recHitsEETag_); 
-      const reco::CaloCluster* bc = iter->superCluster()->seed().get(); // get the basic cluster
+      edm::Handle< EcalRecHitCollection > pEBRecHits;
+      iEvent.getByLabel( recHitsEBTag_, pEBRecHits );
+
+      edm::Handle< EcalRecHitCollection > pEERecHits;
+      iEvent.getByLabel( recHitsEETag_, pEERecHits );
+
+      if(pEBRecHits.isValid() && pEERecHits.isValid()) {
       
-      float eleMaxOver3x3 = ( lazyTool.eMax(*bc) / lazyTool.e3x3(*bc)  );
+        EcalClusterLazyTools lazyTool(iEvent, iSetup, recHitsEBTag_, recHitsEETag_); 
+        const reco::CaloCluster* bc = iter->superCluster()->seed().get(); // get the basic cluster
+      
+        float eleMaxOver3x3 = ( lazyTool.eMax(*bc) / lazyTool.e3x3(*bc)  );
+
+        if(eleMaxOver3x3 > eleMaxOver3x3_) continue;
+
+      }
 
       // Only ecalDriven electrons
       if(! iter->ecalDriven() ) continue;
 
-      if(eleMaxOver3x3 > eleMaxOver3x3_) continue;
 
       // Barrel 
       if(iter->isEB()) {
