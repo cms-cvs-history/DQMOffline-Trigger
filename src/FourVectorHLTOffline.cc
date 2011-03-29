@@ -1,4 +1,4 @@
-// $Id: FourVectorHLTOffline.cc,v 1.94 2011/01/28 23:59:42 rekovic Exp $
+// $Id: FourVectorHLTOffline.cc,v 1.94.2.1 2011/03/29 10:36:40 rekovic Exp $
 // See header file for information. 
 #include "TMath.h"
 #include "DQMOffline/Trigger/interface/FourVectorHLTOffline.h"
@@ -1066,7 +1066,9 @@ void FourVectorHLTOffline::beginRun(const edm::Run& run, const edm::EventSetup& 
             (moduleType.find("Associator") != string::npos) || 
             (moduleType.find("HLTLevel1GTSeed") != string::npos) || 
             (moduleType.find("HLTGlobalSumsCaloMET") != string::npos) ||
-            (moduleType.find("HLTPrescaler") != string::npos) ) {
+            (moduleType.find("HLTPrescaler") != string::npos) ||
+            (hltConfig_.moduleEDMType(moduleName).find("EDFilter") != string::npos)) 
+         {
 
            //std::pair<std::string, int> filterIndexPair;
            //filterIndexPair.first   = moduleName;
