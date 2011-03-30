@@ -49,6 +49,7 @@
 
 class EgammaHLTTrackIsolation;
 class HLTConfigProvider;
+class EcalSeverityLevelAlgo;
 
 namespace egHLT {
 
@@ -79,7 +80,8 @@ namespace egHLT {
     edm::ESHandle<CaloGeometry> caloGeom_;
     edm::ESHandle<CaloTopology> caloTopology_;
     edm::ESHandle<MagneticField> magField_;
-    
+    edm::ESHandle<EcalSeverityLevelAlgo> ecalSeverityLevel_;
+
     edm::Handle<EcalRecHitCollection> ebRecHits_;
     edm::Handle<EcalRecHitCollection> eeRecHits_; 
     edm::Handle<HFRecHitCollection> hfHits_;
@@ -175,7 +177,7 @@ namespace egHLT {
     void fillIsolData(const reco::Photon& pho,OffPho::IsolData& isolData);
     void fillClusShapeData(const reco::Photon& pho,OffPho::ClusShapeData& clusShapeData);
 
-    //tempory debuging functions
+    //tempory debugging functions
     const trigger::TriggerEvent* trigEvt()const{return trigEvt_.product();}
     const std::vector<std::pair<TrigCodes::TrigBitSet,OffEgSel> >& trigCuts()const{return trigCuts_;}
     
