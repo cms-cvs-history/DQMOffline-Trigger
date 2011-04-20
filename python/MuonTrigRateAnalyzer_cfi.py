@@ -126,13 +126,9 @@ offlineDQMMuonTrig = cms.EDAnalyzer("OfflineDQMMuonTrigAnalyzer",
 	# This list contains triggers from both 8E29, 1E31
     # 									
 									
-	TriggerRegExpStrings = cms.vstring(
-	"HLT_L[12]Mu[^_]*$",
-	"HLT_[iI]soMu[^_]*$",
-	"HLT_Mu[^_]*$",
-	"HLT_L[12]DoubleMu[^_]*$",
-	"HLT_DoubleMu[^_]*$"
-    ),
 
+    TriggerRegExpStrings = cms.vstring(
+                       "HLT_(HI)?(L[12])?(Single)?(Double)?(Iso)?Mu[0-9]*(Open)?(_NoVertex)?(_Core)?(_v[0-9]*)?$",
+                             )
 
 )
