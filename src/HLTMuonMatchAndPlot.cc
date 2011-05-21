@@ -1,8 +1,8 @@
  /** \file DQMOffline/Trigger/HLTMuonMatchAndPlot.cc
  *
  *  $Author: klukas $
- *  $Date: 2011/03/21 20:10:41 $
- *  $Revision: 1.22 $
+ *  $Date: 2011/04/29 22:00:27 $
+ *  $Revision: 1.24 $
  */
 
 
@@ -140,6 +140,7 @@ void HLTMuonMatchAndPlot::analyze(const Event & iEvent,
   if (levelArray->GetEntriesFast() > 0) {
     triggerLevel = ((TObjString *)levelArray->At(0))->GetString();
   }
+  delete levelArray;
 
   // Get the pT cut by parsing the name of the HLT path.
   unsigned int cutMinPt = 3;
@@ -150,6 +151,7 @@ void HLTMuonMatchAndPlot::analyze(const Event & iEvent,
     cutMinPt = atoi(ptCutString->GetString());
     cutMinPt = ceil(cutMinPt * plotCuts_["minPtFactor"]);
   }
+  delete objArray;
 
   // Get objects from the event.
   Handle<MuonCollection> allMuons;
@@ -329,7 +331,7 @@ template <class T1, class T2>
 vector<size_t> 
 HLTMuonMatchAndPlot::matchByDeltaR(const vector<T1> & collection1, 
                                    const vector<T2> & collection2,
-                                   const double maxDeltaR = NOMATCH) {
+                                   const double maxDeltaR) {
 
   const size_t n1 = collection1.size();
   const size_t n2 = collection2.size();
