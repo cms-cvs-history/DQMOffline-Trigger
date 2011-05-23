@@ -59,11 +59,10 @@ TauRefProducer = cms.EDProducer("HLTTauRefProducer",
 
 
 
-
 hltTauOfflineMonitor_PFTaus = cms.EDAnalyzer("HLTTauDQMOfflineSource",
     MonitorSetup = cms.VPSet(
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/PFTaus/DoubleLooseIsoTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sDoubleIsoTau40Trk5","",hltTauDQMofflineProcess), 
@@ -79,7 +78,7 @@ hltTauOfflineMonitor_PFTaus = cms.EDAnalyzer("HLTTauDQMOfflineSource",
             LeptonType            = cms.untracked.vint32(0,0,0,0,0)                            
         ),
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/PFTaus/EleTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sL1SingleEG15","",hltTauDQMofflineProcess), 
@@ -97,7 +96,7 @@ hltTauOfflineMonitor_PFTaus = cms.EDAnalyzer("HLTTauDQMOfflineSource",
         ),
         
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/PFTaus/MuLooseTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sL1SingleMu10","",hltTauDQMofflineProcess), 
@@ -114,7 +113,7 @@ hltTauOfflineMonitor_PFTaus = cms.EDAnalyzer("HLTTauDQMOfflineSource",
             LeptonType            = cms.untracked.vint32(-81,83,0,0,0,83)                            
         ),
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/PFTaus/MuTightTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sL1SingleMu10","",hltTauDQMofflineProcess), 
@@ -152,7 +151,7 @@ hltTauOfflineMonitor_PFTaus = cms.EDAnalyzer("HLTTauDQMOfflineSource",
         ),
         
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/PFTaus/SingleLooseIsoTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sSingleIsoTau35Trk20MET60","",hltTauDQMofflineProcess), 
@@ -199,7 +198,7 @@ hltTauOfflineMonitor_PFTaus = cms.EDAnalyzer("HLTTauDQMOfflineSource",
 hltTauOfflineMonitor_Inclusive = cms.EDAnalyzer("HLTTauDQMOfflineSource",
     MonitorSetup = cms.VPSet(
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/Inclusive/DoubleLooseIsoTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sDoubleIsoTau40Trk5","",hltTauDQMofflineProcess), 
@@ -215,7 +214,7 @@ hltTauOfflineMonitor_Inclusive = cms.EDAnalyzer("HLTTauDQMOfflineSource",
             LeptonType            = cms.untracked.vint32(0,0,0,0,0)                            
         ),
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/Inclusive/EleTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sL1SingleEG15","",hltTauDQMofflineProcess), 
@@ -233,7 +232,7 @@ hltTauOfflineMonitor_Inclusive = cms.EDAnalyzer("HLTTauDQMOfflineSource",
         ),
         
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/Inclusive/MuLooseTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sL1SingleMu10","",hltTauDQMofflineProcess), 
@@ -250,7 +249,7 @@ hltTauOfflineMonitor_Inclusive = cms.EDAnalyzer("HLTTauDQMOfflineSource",
             LeptonType            = cms.untracked.vint32(-81,83,0,0,0,83)                            
         ),
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/Inclusive/MuTightTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sL1SingleMu10","",hltTauDQMofflineProcess), 
@@ -288,7 +287,7 @@ hltTauOfflineMonitor_Inclusive = cms.EDAnalyzer("HLTTauDQMOfflineSource",
         ),
         
         cms.PSet(
-            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryRAW","",hltTauDQMofflineProcess),
+            triggerEventObject    = cms.untracked.InputTag("hltTriggerSummaryAOD","",hltTauDQMofflineProcess),
             DQMFolder             = cms.untracked.string('HLT/TauOffline/Inclusive/SingleLooseIsoTau'),
             Filter                = cms.untracked.VInputTag(
                                         cms.InputTag("hltL1sSingleIsoTau35Trk20MET60","",hltTauDQMofflineProcess), 
